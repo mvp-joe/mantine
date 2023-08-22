@@ -1,10 +1,21 @@
-import clsx from 'clsx';
+import defaultClsx, { ClassValue } from 'clsx';
 import { serializeStyles, RegisteredCache } from '@emotion/serialize';
 import { insertStyles, getRegisteredStyles } from '@emotion/utils';
 import type { EmotionCache } from '@emotion/cache';
 import { useGuaranteedMemo } from './utils/use-guaranteed-memo/use-guaranteed-memo';
 import type { CSS } from './types';
 import { useEmotionCache } from './use-emotion-cache';
+
+let clsx = defaultClsx;
+
+/**
+ * override the default clsx function, allowing a user to provide a custom implementation
+ * (for example, if you are using Tailwind, you may want to provide a clsx function that also uses Tailwind Merge - https://github.com/dcastil/tailwind-merge)
+ * @param clsxFn an alternative clsx function
+ */
+export function setClsx(clsxFn: (...classes: ClassValue[]) => string) {
+  clsx = clsxFn;
+}
 
 const refPropertyName = 'ref' as const;
 
